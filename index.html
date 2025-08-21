@@ -1,0 +1,1923 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chitahela Clothing | Since 2016</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="icon" href="logo.png" type="image/png">
+    <link rel="shortcut icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <style>
+        /* Custom Properties */
+        :root {
+            --primary: #000000;
+            --secondary: #d4af37;
+            --accent: #b38f2a;
+            --light: #f8f8f8;
+            --dark: #111111;
+            --text: #333333;
+            --gray: #aaaaaa;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 0;
+            border: 2px solid var(--primary);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 0.5s ease;
+        }
+        .loading-logo {
+            width: 200px;
+            height: 200px;
+            background: url('logo.png') no-repeat center center/contain;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+        }
+        .loading-bar-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            transform: skewX(-15deg);
+        }
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        .loading-text {
+            color: var(--secondary);
+            margin-top: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn:hover {
+            color: var(--secondary);
+            background-color: transparent;
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        .btn:hover::before {
+            left: 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        .section-title h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+        .section-title p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            color: var(--gray);
+        }
+
+        /* Promotional Banner */
+        .promo-banner {
+            position: relative;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 12px 0;
+            overflow: hidden;
+            margin-top: 100px;
+        }
+        .promo-content {
+            white-space: nowrap;
+            display: flex;
+            animation: moveBanner 30s linear infinite;
+        }
+        .promo-content span {
+            padding: 0 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .promo-content i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        @keyframes moveBanner {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Header - Modified to be normal with parallelogram nav items */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 100px;
+            background-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .header-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+        }
+        .logo {
+            height: 60px;
+            width: 200px;
+            background: url('logo.png') no-repeat left center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+        }
+        .logo2 {
+            height: 60px;
+            width: 200px;
+            background: url('logo2.png') no-repeat center center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+        }
+        .logo3 {
+            height: 60px;
+            width: 200px;
+            background: url('logo3.png') no-repeat right center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+        nav ul li a {
+            color: var(--light);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            padding: 12px 25px;
+            display: block;
+            position: relative;
+            transform: skewX(-15deg);
+            background-color: rgba(255,255,255,0.1);
+        }
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+        }
+        nav ul li a span {
+            display: inline-block;
+            transform: skewX(15deg);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .contact-info {
+            display: flex;
+            gap: 20px;
+        }
+        .contact-link {
+            color: var(--light);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .contact-link:hover {
+            color: var(--secondary);
+        }
+        .hamburger {
+            display: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 30px;
+            transition: all 0.3s ease;
+        }
+        .hamburger:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+        }
+        .hero-content {
+            max-width: 800px;
+            margin-left: 10%;
+        }
+        .hero-content h1 {
+            font-size: 5rem;
+            color: var(--light);
+            margin-bottom: 30px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+        .hero-content h1 span {
+            color: var(--secondary);
+            display: block;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            margin-bottom: 10px;
+        }
+        .hero-content p {
+            color: var(--gray);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--secondary);
+            box-shadow: 0 0 0 2px var(--secondary);
+        }
+        .btn-outline:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* Products Section */
+        .products {
+            background-color: var(--light);
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .product-card {
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.5s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .product-image-container {
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+        .product-info {
+            padding: 25px;
+            position: relative;
+        }
+        .product-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover .product-info::before {
+            transform: scaleX(1);
+        }
+        .product-category {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .product-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .current-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        .original-price {
+            font-size: 1rem;
+            color: var(--gray);
+            text-decoration: line-through;
+        }
+        .product-actions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        .product-card:hover .product-actions {
+            bottom: 0;
+            opacity: 1;
+        }
+        .action-btn {
+            flex: 1;
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .action-btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        .action-btn:first-child {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        .action-btn:first-child:hover {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+        .about-image {
+            flex: 1;
+            position: relative;
+            min-height: 500px;
+        }
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--secondary);
+            z-index: 1;
+        }
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+        .about-text {
+            flex: 1;
+        }
+        .about-text h2 {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        .stat-item p {
+            color: var(--light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* New Media Section */
+        .media-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        .media-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        .video-container, .carousel-container {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .carousel {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .carousel-dot.active {
+            background-color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        /* Custom Design Section */
+        .custom-design {
+            background-color: var(--light);
+        }
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        .design-card {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: var(--light);
+            transition: all 0.5s ease;
+        }
+        .design-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));
+            z-index: 1;
+        }
+        .design-card img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .design-card:hover img {
+            transform: scale(1.1);
+        }
+        .design-content {
+            position: relative;
+            z-index: 2;
+        }
+        .design-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .design-card p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        .design-card .btn {
+            background-color: transparent;
+            box-shadow: 0 0 0 2px var(--light);
+            color: var(--light);
+        }
+        .design-card .btn:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+        /* Hexagon Card */
+        .design-card.hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            height: 450px;
+        }
+        /* Parallelogram Card */
+        .design-card.parallelogram {
+            clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+        }
+        /* Diamond Card */
+        .design-card.diamond {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            height: 350px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Design Process */
+        .design-process {
+            margin-top: 80px;
+        }
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .step {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        .step h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .step p {
+            color: var(--gray);
+        }
+
+        /* AI Collections Section */
+        .ai-collections {
+            background-color: var(--light);
+        }
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .ai-card {
+            background-color: var(--light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .ai-image {
+            height: 300px;
+            overflow: hidden;
+        }
+        .ai-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .ai-card:hover .ai-image img {
+            transform: scale(1.05);
+        }
+        .ai-info {
+            padding: 20px;
+        }
+        .ai-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .ai-description {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        .ai-price {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Suits Collection - NEW DESIGN */
+        .suits-collection {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 80px 0;
+            margin-top: 80px;
+        }
+        .suits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .suit-card {
+            background-color: var(--dark);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .suit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .suit-image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 150%; /* 2:3 Aspect Ratio */
+            overflow: hidden;
+        }
+        .suit-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .suit-card:hover .suit-image {
+            transform: scale(1.05);
+        }
+        .suit-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 5px 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            border-radius: 3px;
+        }
+        .suit-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .suit-title {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .suit-description {
+            margin-bottom: 20px;
+            color: var(--gray);
+            flex-grow: 1;
+        }
+        .suit-price {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .suit-features {
+            list-style-type: none;
+            margin-bottom: 25px;
+        }
+        .suit-features li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--light);
+        }
+        .suit-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+        .suit-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .suit-btn {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .suit-btn:hover {
+            background-color: var(--light);
+            transform: translateY(-2px);
+        }
+        .suit-btn.outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+        .suit-btn.outline:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 80px 0;
+        }
+        .newsletter .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .newsletter-text h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .newsletter-text p {
+            max-width: 500px;
+        }
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            width: 100%;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .newsletter-form input:focus {
+            outline: 2px solid var(--primary);
+        }
+        .newsletter-form button {
+            padding: 15px 30px;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            font-family: inherit;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .newsletter-form button:hover {
+            background-color: var(--dark);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--light);
+            padding: 80px 0;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        .contact-card {
+            background-color: var(--light);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .contact-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+        }
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .contact-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        .contact-link-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: var(--light);
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .contact-link-btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+        .copyright {
+            padding-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .copyright a {
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        .copyright a:hover {
+            color: var(--secondary);
+        }
+        .copyright span {
+            color: var(--secondary);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero-content h1 {
+                font-size: 4rem;
+            }
+            .about-content {
+                gap: 50px;
+            }
+            .process-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .header-content {
+                padding: 0 30px;
+            }
+            nav {
+                position: fixed;
+                top: 100px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 100px);
+                background-color: var(--primary);
+                transition: all 0.5s ease;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+            }
+            nav.active {
+                left: 0;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 15px 0;
+            }
+            nav ul li a {
+                transform: none;
+                padding: 15px 30px;
+            }
+            nav ul li a span {
+                transform: none;
+            }
+            .contact-info {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-content {
+                margin-left: 5%;
+                text-align: center;
+            }
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-btns {
+                justify-content: center;
+            }
+            .about-content {
+                flex-direction: column;
+            }
+            .about-image {
+                min-height: 400px;
+                width: 100%;
+            }
+            .media-container {
+                flex-direction: column;
+            }
+            .video-container, .carousel-container {
+                width: 100%;
+            }
+            .carousel {
+                height: 350px;
+            }
+            .newsletter .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+            .newsletter-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .newsletter-form {
+                max-width: 100%;
+            }
+            .design-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            .design-card.hexagon,
+            .design-card.parallelogram,
+            .design-card.diamond {
+                clip-path: none;
+                height: 400px;
+            }
+            .suits-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            .about-image {
+                min-height: 350px;
+            }
+            .about-text h2 {
+                font-size: 2.5rem;
+            }
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+            .carousel {
+                height: 300px;
+            }
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+            .suits-grid {
+                grid-template-columns: 1fr;
+            }
+            .suit-actions {
+                flex-direction: column;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+                @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            .section {
+                padding: 70px 0;
+            }
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-text h2 {
+                font-size: 2rem;
+            }
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+            .newsletter-form {
+                flex-direction: column;
+            }
+            .newsletter-form input {
+                width: 100%;
+            }
+            .newsletter-form button {
+                width: 100%;
+                padding: 15px;
+            }
+            .promo-content span {
+                font-size: 0.8rem;
+                padding: 0 15px;
+            }
+            .carousel {
+                height: 250px;
+            }
+            .suit-image-container {
+                padding-top: 133%; /* 3:4 ratio for better mobile viewing */
+            }
+            .suit-title {
+                font-size: 1.3rem;
+            }
+            .suit-price {
+                font-size: 1.3rem;
+            }
+            .suit-btn {
+                padding: 10px 15px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo"></div>
+        <div class="loading-bar-container">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="loading-text">Loading Chitahela</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo"></a>
+            <a href="#" class="logo2"></a>
+            <a href="#" class="logo3"></a>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home"><span>Home</span></a></li>
+                    <li><a href="#products"><span>Collections</span></a></li>
+                    <li><a href="#about"><span>Brand</span></a></li>
+                    <li><a href="#media"><span>Gallery</span></a></li>
+                    <li><a href="#custom"><span>Designs</span></a></li>
+                    <li><a href="#contact"><span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="contact-info">
+                <a href="tel:0769655120" class="contact-link"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Promotional Banner -->
+    <div class="promo-banner">
+        <div class="promo-content">
+            <span><i class="fas fa-star"></i> Premium Quality Materials</span>
+            <span><i class="fas fa-truck"></i> Free Delivery on Orders Over R5000</span>
+            <span><i class="fas fa-tshirt"></i> Unique Custom Designs</span>
+            <span><i class="fas fa-award"></i> 7+ Years of Excellence</span>
+            <span><i class="fas fa-heart"></i> 100% Satisfaction Guarantee</span>
+            <span><i class="fas fa-star"></i> Premium Quality Materials</span>
+            <span><i class="fas fa-truck"></i> Free Delivery on Orders Over R5000</span>
+            <span><i class="fas fa-tshirt"></i> Unique Custom Designs</span>
+            <span><i class="fas fa-award"></i> 7+ Years of Excellence</span>
+            <span><i class="fas fa-heart"></i> 100% Satisfaction Guarantee</span>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1><span>Since 2016</span>CHITAHELA CLOTHING</h1>
+            <p>Elevating streetwear with premium quality and bold designs that make a statement. Our collections blend urban aesthetics with luxury craftsmanship.</p>
+            <div class="hero-btns">
+                <a href="#products" class="btn">Shop Now</a>
+                <a href="#custom" class="btn btn-outline">Custom Designs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Collections</h2>
+                <p>Discover our premium streetwear collections that blend urban aesthetics with luxury craftsmanship.</p>
+            </div>
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="b2.jpeg" alt="Chitahela Original T-shirt" class="product-image" id="original-tshirt-img">
+                        <div class="product-badge">New</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-shirts</p>
+                        <h3 class="product-title">Chitahela Original T-shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R200</span>
+                            <span class="original-price">R280</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Chitahela Original T-shirt&body=Hello, I'm interested in the Chitahela Original T-shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Chitahela Original T-shirt." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="a2.jpeg" alt="Chitahela Deluxe T-shirt" class="product-image" id="deluxe-tshirt-img">
+                        <div class="product-badge">Bestseller</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-Shirts</p>
+                        <h3 class="product-title">Chitahela Deluxe T-shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R350</span>
+                            <span class="original-price">R400</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Chitahela Deluxe T-shirt&body=Hello, I'm interested in the Chitahela Deluxe T-shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Chitahela Deluxe T-shirt" class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="sample3.jpeg" alt="Urban Hoodie" class="product-image">
+                        <div class="product-badge">Limited</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Hoodie</p>
+                        <h3 class="product-title">Urban Hoodie</h3>
+                        <div class="product-price">
+                            <span class="current-price">R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Urban Hoodie&body=Hello, I'm interested in the Urban Hoodie. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Urban Hoodie." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="cap.jpeg" alt="Signature Cap" class="product-image">
+                        <div class="product-badge">Sale</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Caps</p>
+                        <h3 class="product-title">Signature Cap</h3>
+                        <div class="product-price">
+                            <span class="current-price">R150</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Signature Cap&body=Hello, I'm interested in the Signature Cap. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Signature Cap." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Story</h2>
+                <p>From humble beginnings to becoming a recognized name in streetwear fashion.</p>
+            </div>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="story.jpeg" alt="Chitahela Clothing Workshop">
+                </div>
+                <div class="about-text">
+                    <h2>Since 2016</h2>
+<p>Chitahela was founded in 2016 with a vision to redefine and promote authentic African streetwear, blending urban aesthetics with premium quality materials and craftsmanship.</p>
+<p>Our journey began with a big dream. Today, we've grown into a recognized brand delivering our bold designs across Africa, with a dedicated service throughout South Africa.</p>
+<p>Operating as a cohesive remote team, every garment we create tells a story of passion, dedication, and the relentless pursuit of excellence, connecting digitally to serve the continent.</p>
+<div class="about-stats">
+                        <div class="stat-item">
+                            <h3>7+</h3>
+                            <p>Years of Excellence</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>190+</h3>
+                            <p>Happy Customers</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>40+</h3>
+                            <p>Unique Designs</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>3</h3>
+                            <p>Collections</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Media Section -->
+    <section class="section media-section" id="media">
+        <div class="container">
+            <div class="section-title">
+                <h2>Behind The Scenes</h2>
+                <p>Take a look at our creative process and latest collections.</p>
+            </div>
+            <div class="media-container">
+                <div class="video-container">
+                    <video controls poster="video.mp4">
+                        <source src="video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-slide active">
+                                <img src="design3.jpeg" alt="Design Process">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="design2.jpeg" alt="Fabric Selection">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="design.jpeg" alt="Finished Products">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="design4.jpeg" alt="Finished Products">
+                            </div>
+                        </div>
+                        <div class="carousel-controls">
+                            <div class="carousel-dot active" data-slide="0"></div>
+                            <div class="carousel-dot" data-slide="1"></div>
+                            <div class="carousel-dot" data-slide="2"></div>
+                            <div class="carousel-dot" data-slide="3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Design Section -->
+    <section class="section custom-design" id="custom">
+        <div class="container">
+            <div class="section-title">
+                <h2>Custom Designs</h2>
+                <p>Create your unique style with our custom design services.</p>
+            </div>
+            <div class="design-grid">
+                <div class="design-card hexagon">
+                    <img src="design 3.png" alt="Custom Hoodies">
+                    <div class="design-content">
+                        <h3>Custom Hoodies</h3>
+                        <p>Design your own hoodie with custom graphics, text, and colors.</p>
+                        <a href="mailto:chitahelaza@gmail.com?subject=Custom Hoodie Inquiry&body=Hello, I'm interested in a custom hoodie design. Please contact me with more information." class="btn">Get Quote</a>
+                    </div>
+                </div>
+                <div class="design-card parallelogram">
+                    <img src="design 1.png" alt="Custom T-Shirts">
+                    <div class="design-content">
+                        <h3>Custom T-Shirts</h3>
+                        <p>Create unique t-shirts for your team, event, or personal style.</p>
+                        <a href="mailto:chitahelaza@gmail.com?subject=Custom T-Shirt Inquiry&body=Hello, I'm interested in custom t-shirt designs. Please contact me with more information." class="btn">Get Quote</a>
+                    </div>
+                </div>
+                <div class="design-card diamond">
+                    <img src="design 4.png" alt="Bulk Orders">
+                    <div class="design-content">
+                        <h3>Bulk Orders</h3>
+                        <p>Special pricing and designs for bulk orders and collaborations.</p>
+                        <a href="mailto:chitahelaza@gmail.com?subject=Bulk Order Inquiry&body=Hello, I'm interested in bulk ordering. Please contact me with more information." class="btn">Get Quote</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="design-process">
+                <div class="section-title">
+                    <h2>Design Process</h2>
+                    <p>How we bring your custom designs to life.</p>
+                </div>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-icon">1</div>
+                        <h4>Consultation</h4>
+                        <p>We discuss your ideas, preferences, and vision for your custom design.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">2</div>
+                        <h4>Design</h4>
+                        <p>Our designers create mockups based on your requirements and feedback.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">3</div>
+                        <h4>Production</h4>
+                        <p>We craft your design using premium materials and precise techniques.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">4</div>
+                        <h4>Delivery</h4>
+                        <p>Your custom creation is carefully packaged and delivered to you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Collections Section -->
+    <section class="section ai-collections" id="ai-collections">
+        <div class="container">
+            <div class="section-title">
+                <h2>Enhanced Collections</h2>
+                <p>Discover our futuristic designs at Chitahela Clothing.</p>
+            </div>
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai1.png" alt="Neo-Futuristic Hoodie">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Original T-Shirt</h3>
+                        <div class="ai-price">R200</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai2.png" alt="Quantum T-Shirt">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Deluxe T-Shirt</h3>
+                        <div class="ai-price">R350</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai3.png" alt="Neural Network Jacket">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Female Hoodie</h3>
+                        <div class="ai-price">R400</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai4.png" alt="Algorithmic Sweater">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Ladies Tracksuits </h3>
+                        <div class="ai-price">R600</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai5.png" alt="Data Stream Pants">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Custom Hoodie</h3>
+                        <div class="ai-price">R400</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai6.png" alt="Binary Code Cap">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Modern Hoodie</h3>
+                        <div class="ai-price">R400</div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <div class="ai-image">
+                        <img src="ai7.png" alt="Pixel Matrix Vest">
+                    </div>
+                    <div class="ai-info">
+                        <h3 class="ai-title">Chitahela Tracksuits</h3>
+                        <div class="ai-price">R600</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Suits Collection - NEW DESIGN -->
+    <section class="section suits-collection" id="suits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Premium Suits Collection</h2>
+                <p>Elevate your style with our exclusive range of premium tailored suits.</p>
+            </div>
+            <div class="suits-grid">
+                <!-- Suit 1 -->
+                <div class="suit-card">
+                    <div class="suit-image-container">
+                        <img src="suit2.jpeg" alt="Executive Business Suit" class="suit-image">
+                        <div class="suit-badge">Premium</div>
+                    </div>
+                    <div class="suit-info">
+                        <h3 class="suit-title">Executive Business Suit</h3>
+                        <p class="suit-description">Crafted from premium Italian wool, this suit offers impeccable fit and timeless elegance for the modern professional.</p>
+                        <div class="suit-price">R1300</div>
+                        <ul class="suit-features">
+                            <li><i class="fas fa-check"></i> Perfect for black-tie events </li>
+                            <li><i class="fas fa-check"></i> Available in multiple colors </li>                            
+                        </ul>
+                        <div class="suit-actions">
+                            <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Executive Business Suit." class="suit-btn">WhatsApp</a>
+                            <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Executive Business Suit" class="suit-btn outline">Email</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Suit 2 -->
+                <div class="suit-card">
+                    <div class="suit-image-container">
+                        <img src="suit3.jpeg" alt="Luxury Evening Suit" class="suit-image">
+                        <div class="suit-badge"> </div>
+                    </div>
+                    <div class="suit-info">
+                        <p class="suit-description">Make a statement at formal events with this sophisticated evening suit featuring subtle satin detailing.</p>
+                        <div class="suit-price">R1300</div>
+                        <ul class="suit-features">
+                            <li><i class="fas fa-check"></i> Midnight black premium fabric</li>
+                            <li><i class="fas fa-check"></i> Slim fit design</li>                          
+                        </ul>
+                        <div class="suit-actions">
+                            <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Suit." class="suit-btn">WhatsApp</a>
+                            <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Suit" class="suit-btn outline">Email</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Suit 3 -->
+                <div class="suit-card">
+                    <div class="suit-image-container">
+                        <img src="suit4.jpeg" alt="Contemporary Slim Fit" class="suit-image">
+                        <div class="suit-badge"> Luxury </div>
+                    </div>
+                    <div class="suit-info">
+                        <h3 class="suit-title">Chitahela Slim Fit</h3>
+                        <p class="suit-description">Modern slim-fit design with attention to detail that offers both comfort and style for the fashion-forward individual.</p>
+                        <div class="suit-price">R1300</div>
+                        <ul class="suit-features">
+                            <li><i class="fas fa-check"></i> Modern slim-fit cut </li>
+                            <li><i class="fas fa-check"></i> Functional buttons </li>
+                        </ul>
+                        <div class="suit-actions">
+                            <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Suit." class="suit-btn">WhatsApp</a>
+                            <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Suit" class="suit-btn outline">Email</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Suit 4 -->
+                <div class="suit-card">
+                    <div class="suit-image-container">
+                        <img src="suit5.jpeg" alt="Classic Double-Breasted" class="suit-image">
+                        <div class="suit-badge"> </div>
+                    </div>
+                    <div class="suit-info">
+                        <p class="suit-description">Timeless design that exudes confidence and sophistication for the distinguished gentleman.</p>
+                        <div class="suit-price">R1300</div>
+                        <ul class="suit-features">
+                            <li><i class="fas fa-check"></i> High-quality stretch fabric </li>
+                            <li><i class="fas fa-check"></i> Available in various colors </li>
+                        </ul>
+                        <div class="suit-actions">
+                            <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Suit." class="suit-btn">WhatsApp</a>
+                            <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Suit" class="suit-btn outline">Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with us for inquiries, custom orders, or collaborations.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Us</h3>
+                    <p>Send us an email for inquiries or custom orders</p>
+                    <a href="mailto:chitahelaza@gmail.com" class="contact-link-btn">chitahelaza@gmail.com</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp</h3>
+                    <p>Chat with us directly on WhatsApp</p>
+                    <a href="https://wa.me/27602130149" class="contact-link-btn">+27 60 213 0149</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Call Us</h3>
+                    <p>Speak directly with our team</p>
+                    <a href="tel:0769655120" class="contact-link-btn">076 965 5120</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <div class="newsletter-text">
+                <h2>Stay Updated</h2>
+                <p>Subscribe to our newsletter for exclusive offers, new releases, and style inspiration.</p>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 <span>Chitahela Clothing</span>. All Rights Reserved. | Designed with <i class="fas fa-heart"></i> by <a href="mailto:chitahelaza@gmail.com">Our Team</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBar = document.querySelector('.loading-progress');
+            const loadingText = document.querySelector('.loading-text');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loadingText.textContent = "Ready!";
+                    
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+        });
+
+        // Mobile Navigation
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+        
+        hamburger.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Product Image Rotation
+        const originalTshirtImages = ['b1.jpeg', 'b2.jpeg'];
+        const deluxeTshirtImages = ['a1.jpeg', 'a2.jpeg'];
+        let originalIndex = 0;
+        let deluxeIndex = 0;
+        
+        function rotateProductImages() {
+            const originalImg = document.getElementById('original-tshirt-img');
+            const deluxeImg = document.getElementById('deluxe-tshirt-img');
+            
+            originalIndex = (originalIndex + 1) % originalTshirtImages.length;
+            deluxeIndex = (deluxeIndex + 1) % deluxeTshirtImages.length;
+            
+            originalImg.src = originalTshirtImages[originalIndex];
+            deluxeImg.src = deluxeTshirtImages[deluxeIndex];
+            
+            // Add fade effect
+            originalImg.style.opacity = 0;
+            deluxeImg.style.opacity = 0;
+            
+            setTimeout(() => {
+                originalImg.style.opacity = 1;
+                deluxeImg.style.opacity = 1;
+            }, 100);
+        }
+        
+        // Rotate images every 3 seconds
+        setInterval(rotateProductImages, 3000);
+
+        // Image Carousel
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        const carouselSlides = document.querySelectorAll('.carousel-slide');
+        
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideIndex = dot.getAttribute('data-slide');
+                
+                // Update active dot
+                carouselDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+                
+                // Update active slide
+                carouselSlides.forEach(slide => slide.classList.remove('active'));
+                carouselSlides[slideIndex].classList.add('active');
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.height = '80px';
+                header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
+            } else {
+                header.style.height = '100px';
+                header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+            }
+        });
+
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            alert(`Thank you for subscribing with ${email}! You'll hear from us soon.`);
+            this.reset();
+        });
+    </script>
+</body>
+</html>

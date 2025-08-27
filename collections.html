@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections - Chitahela Clothing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="shortcut icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Properties */
+        :root {
+            --primary: #000000;
+            --secondary: #d4af37;
+            --accent: #b38f2a;
+            --light: #f8f8f8;
+            --dark: #111111;
+            --text: #333333;
+            --gray: #aaaaaa;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 0;
+            border: 2px solid var(--primary);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 0.5s ease;
+        }
+        .loading-logo {
+            width: 200px;
+            height: 200px;
+            background: url('logo.png') no-repeat center center/contain;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+        }
+        .loading-bar-container {
+            width: 300px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            transform: skewX(-15deg);
+        }
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        .loading-text {
+            color: var(--secondary);
+            margin-top: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn:hover {
+            color: var(--secondary);
+            background-color: transparent;
+            box-shadow: 0 0 0 2px var(--secondary);
+            transform: translateY(-3px);
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        .btn:hover::before {
+            left: 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        .section-title h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+        .section-title p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            color: var(--gray);
+        }
+
+        /* Promotional Banner */
+        .promo-banner {
+            position: relative;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 12px 0;
+            overflow: hidden;
+            margin-top: 100px;
+        }
+        .promo-content {
+            white-space: nowrap;
+            display: flex;
+            animation: moveBanner 30s linear infinite;
+        }
+        .promo-content span {
+            padding: 0 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .promo-content i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        @keyframes moveBanner {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Header - Modified to be normal with parallelogram nav items */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 100px;
+            background-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+        .header-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+        }
+        .logo {
+            height: 60px;
+            width: 200px;
+            background: url('logo.png') no-repeat left center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+            transition: var(--transition);
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .logo2 {
+            height: 60px;
+            width: 200px;
+            background: url('logo2.png') no-repeat center center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+            transition: var(--transition);
+        }
+        .logo2:hover {
+            transform: scale(1.05);
+        }
+        .logo3 {
+            height: 60px;
+            width: 200px;
+            background: url('logo3.png') no-repeat right center/contain;
+            filter: drop-shadow(0 0 5px rgba(212,175,55,0.5));
+            transition: var(--transition);
+        }
+        .logo3:hover {
+            transform: scale(1.05);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+        nav ul li a {
+            color: var(--light);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 12px 25px;
+            display: block;
+            position: relative;
+            transform: skewX(-15deg);
+            background-color: rgba(255,255,255,0.1);
+        }
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+        }
+        nav ul li a span {
+            display: inline-block;
+            transform: skewX(15deg);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .contact-info {
+            display: flex;
+            gap: 20px;
+        }
+        .contact-link {
+            color: var(--light);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .contact-link:hover {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: 30px;
+            transition: var(--transition);
+        }
+        .hamburger:hover {
+            color: var(--secondary);
+        }
+
+        /* Collection Hero */
+        .collection-hero {
+            height: 60vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light);
+            padding-top: 100px;
+            position: relative;
+        }
+        .collection-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(212,175,55,0.2) 0%, transparent 100%);
+            z-index: 1;
+        }
+        .collection-hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+        .collection-hero h1 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        .collection-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--gray);
+        }
+
+        /* Collection Filter */
+        .collection-filter {
+            padding: 60px 0 40px;
+            background-color: var(--light);
+            position: relative;
+        }
+        .collection-filter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pattern.png') repeat;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .filter-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .filter-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+
+        /* Products Section */
+        .products {
+            background-color: var(--light);
+            position: relative;
+        }
+        .products::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pattern.png') repeat;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .product-card {
+            background-color: var(--light);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-radius: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .product-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .product-image-container {
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            border-radius: 3px;
+        }
+        .product-info {
+            padding: 25px;
+            position: relative;
+        }
+        .product-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+        .product-card:hover .product-info::before {
+            transform: scaleX(1);
+        }
+        .product-category {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .product-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .current-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        .original-price {
+            font-size: 1rem;
+            color: var(--gray);
+            text-decoration: line-through;
+        }
+        .product-actions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            transition: var(--transition);
+            opacity: 0;
+        }
+        .product-card:hover .product-actions {
+            bottom: 0;
+            opacity: 1;
+        }
+        .action-btn {
+            flex: 1;
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .action-btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        .action-btn:first-child {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        .action-btn:first-child:hover {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+
+        /* Quick View Button */
+        .quick-view-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+        .product-card:hover .quick-view-btn {
+            opacity: 1;
+        }
+
+        /* Back to home button */
+        .back-to-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary);
+            color: var(--primary);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: var(--transition);
+            z-index: 100;
+        }
+        .back-to-home:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 80px 0;
+            position: relative;
+        }
+        .newsletter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pattern.png') repeat;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .newsletter .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        .newsletter-text h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .newsletter-text p {
+            max-width: 500px;
+        }
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            width: 100%;
+        }
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .newsletter-form input:focus {
+            outline: 2px solid var(--primary);
+        }
+        .newsletter-form button {
+            padding: 15px 30px;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            font-family: inherit;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .newsletter-form button:hover {
+            background-color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 50px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(212,175,55,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .copyright {
+            padding-top: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        .copyright a {
+            color: var(--light);
+            transition: var(--transition);
+        }
+        .copyright a:hover {
+            color: var(--secondary);
+        }
+        .copyright span {
+            color: var(--secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Quick View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 10000;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: var(--light);
+            margin: 5% auto;
+            width: 90%;
+            max-width: 1000px;
+            border-radius: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 10001;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .collection-hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header-content {
+                padding: 0 30px;
+            }
+            nav {
+                position: fixed;
+                top: 100px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 100px);
+                background-color: var(--primary);
+                transition: all 0.5s ease;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+            }
+            nav.active {
+                left: 0;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 15px 0;
+            }
+            nav ul li a {
+                transform: none;
+                padding: 15px 30px;
+            }
+            nav ul li a span {
+                transform: none;
+            }
+            .contact-info {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+            }
+            .collection-hero h1 {
+                font-size: 3rem;
+            }
+            .newsletter .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+            .newsletter-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .newsletter-form {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .collection-hero h1 {
+                font-size: 2.5rem;
+            }
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            .filter-options {
+                gap: 10px;
+            }
+            .filter-btn {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .collection-hero {
+                height: 50vh;
+                min-height: 400px;
+            }
+            .collection-hero h1 {
+                font-size: 2rem;
+            }
+            .section {
+                padding: 70px 0;
+            }
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            .newsletter-form {
+                flex-direction: column;
+            }
+            .newsletter-form input {
+                width: 100%;
+            }
+            .newsletter-form button {
+                width: 100%;
+                padding: 15px;
+            }
+            .back-to-home {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-logo"></div>
+        <div class="loading-bar-container">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="loading-text">Loading Collections</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo"></a>
+            <a href="index.html" class="logo2"></a>
+            <a href="index.html" class="logo3"></a>
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html#home"><span>Home</span></a></li>
+                    <li><a href="collections.html" class="active"><span>Collections</span></a></li>
+                    <li><a href="index.html#about"><span>Brand</span></a></li>
+                    <li><a href="index.html#media"><span>Gallery</span></a></li>
+                    <li><a href="index.html#custom"><span>Designs</span></a></li>
+                    <li><a href="index.html#contact"><span>Contact</span></a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="contact-info">
+                    <a href="tel:0769655120" class="contact-link"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Promotional Banner -->
+    <div class="promo-banner">
+        <div class="promo-content">
+            <span><i class="fas fa-star"></i> Premium Quality Materials</span>
+            <span><i class="fas fa-truck"></i> Free Delivery on Orders Over R5000</span>
+            <span><i class="fas fa-tshirt"></i> Unique Custom Designs</span>
+            <span><i class="fas fa-award"></i> 7+ Years of Excellence</span>
+            <span><i class="fas fa-heart"></i> 100% Satisfaction Guarantee</span>
+            <span><i class="fas fa-star"></i> Premium Quality Materials</span>
+            <span><i class="fas fa-truck"></i> Free Delivery on Orders Over R5000</span>
+            <span><i class="fas fa-tshirt"></i> Unique Custom Designs</span>
+            <span><i class="fas fa-award"></i> 7+ Years of Excellence</span>
+            <span><i class="fas fa-heart"></i> 100% Satisfaction Guarantee</span>
+        </div>
+    </div>
+
+    <!-- Collection Hero -->
+    <section class="collection-hero">
+        <div class="container">
+            <div class="collection-hero-content">
+                <h1>Our Collections</h1>
+                <p>Explore our complete range of premium streetwear, custom designs, and exclusive collections</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Filter -->
+    <section class="collection-filter">
+        <div class="container">
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="tshirts">T-Shirts</button>
+                <button class="filter-btn" data-filter="hoodies">Hoodies</button>
+                <button class="filter-btn" data-filter="accessories">Accessories</button>
+                <button class="filter-btn" data-filter="suits">Suits</button>
+                <button class="filter-btn" data-filter="custom">Custom Designs</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section products">
+        <div class="container">
+            <div class="product-grid">
+                <!-- T-Shirts -->
+                <div class="product-card show" data-category="tshirts">
+                    <div class="product-image-container">
+                        <img src="b2.jpeg" alt="Chitahela Original T-shirt" class="product-image">
+                        <div class="product-badge">New</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-shirts</p>
+                        <h3 class="product-title">Chitahela Original T-shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R200</span>
+                            <span class="original-price">R280</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Chitahela Original T-shirt&body=Hello, I'm interested in the Chitahela Original T-shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Chitahela Original T-shirt." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="tshirts">
+                    <div class="product-image-container">
+                        <img src="a2.jpeg" alt="Chitahela Deluxe T-shirt" class="product-image">
+                        <div class="product-badge">Bestseller</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-Shirts</p>
+                        <h3 class="product-title">Chitahela Deluxe T-shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R350</span>
+                            <span class="original-price">R400</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Chitahela Deluxe T-shirt&body=Hello, I'm interested in the Chitahela Deluxe T-shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Chitahela Deluxe T-shirt" class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Hoodies -->
+                <div class="product-card show" data-category="hoodies">
+                    <div class="product-image-container">
+                        <img src="sample3.jpeg" alt="Urban Hoodie" class="product-image">
+                        <div class="product-badge">Limited</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Hoodie</p>
+                        <h3 class="product-title">Urban Hoodie</h3>
+                        <div class="product-price">
+                            <span class="current-price">R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Urban Hoodie&body=Hello, I'm interested in the Urban Hoodie. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Urban Hoodie." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Accessories -->
+                <div class="product-card show" data-category="accessories">
+                    <div class="product-image-container">
+                        <img src="cap.jpeg" alt="Signature Cap" class="product-image">
+                        <div class="product-badge">Sale</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Caps</p>
+                        <h3 class="product-title">Signature Cap</h3>
+                        <div class="product-price">
+                            <span class="current-price">R150</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Signature Cap&body=Hello, I'm interested in the Signature Cap. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Signature Cap." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                                <!-- Suits -->
+                <div class="product-card show" data-category="suits">
+                    <div class="product-image-container">
+                        <img src="suit2.jpeg" alt="Executive Business Suit" class="product-image">
+                        <div class="product-badge">Premium</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Suits</p>
+                        <h3 class="product-title">Executive Business Suit</h3>
+                        <div class="product-price">
+                            <span class="current-price">R1300</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Executive Business Suit&body=Hello, I'm interested in the Executive Business Suit. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Executive Business Suit." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="suits">
+                    <div class="product-image-container">
+                        <img src="suit3.jpeg" alt="Luxury Evening Suit" class="product-image">
+                        <div class="product-badge">Exclusive</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Suits</p>
+                        <h3 class="product-title">Luxury Evening Suit</h3>
+                        <div class="product-price">
+                            <span class="current-price">R1300</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Luxury Evening Suit&body=Hello, I'm interested in the Luxury Evening Suit. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Luxury Evening Suit." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="suits">
+                    <div class="product-image-container">
+                        <img src="suit4.jpeg" alt="Contemporary Slim Fit" class="product-image">
+                        <div class="product-badge">Trending</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Suits</p>
+                        <h3 class="product-title">Contemporary Slim Fit</h3>
+                        <div class="product-price">
+                            <span class="current-price">R1300</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Contemporary Slim Fit Suit&body=Hello, I'm interested in the Contemporary Slim Fit Suit. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Contemporary Slim Fit Suit." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="suits">
+                    <div class="product-image-container">
+                        <img src="suit5.jpeg" alt="Classic Double-Breasted" class="product-image">
+                        <div class="product-badge">Classic</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Suits</p>
+                        <h3 class="product-title">Classic Double-Breasted</h3>
+                        <div class="product-price">
+                            <span class="current-price">R1300</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Classic Double-Breasted Suit&body=Hello, I'm interested in the Classic Double-Breasted Suit. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Classic Double-Breasted Suit." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- Custom Designs -->
+                <div class="product-card show" data-category="custom">
+                    <div class="product-image-container">
+                        <img src="design 3.png" alt="Custom Hoodies" class="product-image">
+                        <div class="product-badge">Custom</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Custom Designs</p>
+                        <h3 class="product-title">Custom Hoodies</h3>
+                        <div class="product-price">
+                            <span class="current-price">From R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Custom Hoodie Inquiry&body=Hello, I'm interested in a custom hoodie design. Please contact me with more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in custom hoodies." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="custom">
+                    <div class="product-image-container">
+                        <img src="design 1.png" alt="Custom T-Shirts" class="product-image">
+                        <div class="product-badge">Custom</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Custom Designs</p>
+                        <h3 class="product-title">Custom T-Shirts</h3>
+                        <div class="product-price">
+                            <span class="current-price">From R200</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Custom T-Shirt Inquiry&body=Hello, I'm interested in custom t-shirt designs. Please contact me with more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in custom t-shirts." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="custom">
+                    <div class="product-image-container">
+                        <img src="design 4.png" alt="Bulk Orders" class="product-image">
+                        <div class="product-badge">Bulk</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Custom Designs</p>
+                        <h3 class="product-title">Bulk Orders</h3>
+                        <div class="product-price">
+                            <span class="current-price">Custom Quote</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Bulk Order Inquiry&body=Hello, I'm interested in bulk ordering. Please contact me with more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in bulk orders." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <!-- AI Collection Items -->
+                <div class="product-card show" data-category="tshirts">
+                    <div class="product-image-container">
+                        <img src="ai1.png" alt="Neo-Futuristic Hoodie" class="product-image">
+                        <div class="product-badge">New</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-Shirts</p>
+                        <h3 class="product-title">Original T-Shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R200</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Original T-Shirt&body=Hello, I'm interested in the Original T-Shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Original T-Shirt." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="tshirts">
+                    <div class="product-image-container">
+                        <img src="ai2.png" alt="Quantum T-Shirt" class="product-image">
+                        <div class="product-badge">Popular</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">T-Shirts</p>
+                        <h3 class="product-title">Deluxe T-Shirt</h3>
+                        <div class="product-price">
+                            <span class="current-price">R350</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Deluxe T-Shirt&body=Hello, I'm interested in the Deluxe T-Shirt. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Deluxe T-Shirt." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="hoodies">
+                    <div class="product-image-container">
+                        <img src="ai3.png" alt="Neural Network Jacket" class="product-image">
+                        <div class="product-badge">Women</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Hoodies</p>
+                        <h3 class="product-title">Female Hoodie</h3>
+                        <div class="product-price">
+                            <span class="current-price">R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Female Hoodie&body=Hello, I'm interested in the Female Hoodie. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Female Hoodie." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="custom">
+                    <div class="product-image-container">
+                        <img src="ai4.png" alt="Algorithmic Sweater" class="product-image">
+                        <div class="product-badge">Women</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Custom Designs</p>
+                        <h3 class="product-title">Ladies Tracksuits</h3>
+                        <div class="product-price">
+                            <span class="current-price">R600</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Ladies Tracksuits&body=Hello, I'm interested in the Ladies Tracksuits. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Ladies Tracksuits." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="hoodies">
+                    <div class="product-image-container">
+                        <img src="ai5.png" alt="Data Stream Pants" class="product-image">
+                        <div class="product-badge">Custom</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Hoodies</p>
+                        <h3 class="product-title">Custom Hoodie</h3>
+                        <div class="product-price">
+                            <span class="current-price">R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Custom Hoodie&body=Hello, I'm interested in the Custom Hoodie. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Custom Hoodie." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="hoodies">
+                    <div class="product-image-container">
+                        <img src="ai6.png" alt="Binary Code Cap" class="product-image">
+                        <div class="product-badge">Modern</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Hoodies</p>
+                        <h3 class="product-title">Modern Hoodie</h3>
+                        <div class="product-price">
+                            <span class="current-price">R400</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Modern Hoodie&body=Hello, I'm interested in the Modern Hoodie. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Modern Hoodie." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="product-card show" data-category="custom">
+                    <div class="product-image-container">
+                        <img src="ai7.png" alt="Pixel Matrix Vest" class="product-image">
+                        <div class="product-badge">Premium</div>
+                        <div class="quick-view-btn"><i class="fas fa-eye"></i> Quick View</div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-category">Custom Designs</p>
+                        <h3 class="product-title">Chitahela Tracksuits</h3>
+                        <div class="product-price">
+                            <span class="current-price">R600</span>
+                            <span class="original-price"></span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about Chitahela Tracksuits&body=Hello, I'm interested in the Chitahela Tracksuits. Please send me more information." class="action-btn">Send Email</a>
+                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the Chitahela Tracksuits." class="action-btn">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <div class="newsletter-text">
+                <h2>Stay Updated</h2>
+                <p>Subscribe to our newsletter for exclusive offers, new releases, and style inspiration.</p>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 <span>Chitahela Clothing</span>. All Rights Reserved. | Designed with <i class="fas fa-heart"></i> by <a href="mailto:chitahelaza@gmail.com">Our Team</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="close-modal" id="closeModal">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-content" id="modalContent">
+            <!-- Content will be inserted via JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBar = document.querySelector('.loading-progress');
+            const loadingText = document.querySelector('.loading-text');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loadingText.textContent = "Ready!";
+                    
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+            
+            // Mobile navigation
+            const hamburger = document.getElementById('hamburger');
+            const nav = document.getElementById('nav');
+            
+            hamburger.addEventListener('click', function() {
+                nav.classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-bars');
+                this.querySelector('i').classList.toggle('fa-times');
+            });
+            
+            // Collection filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    productCards.forEach(card => {
+                        if (filterValue === 'all') {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.classList.add('show');
+                            }, 10);
+                        } else {
+                            if (card.getAttribute('data-category') === filterValue) {
+                                card.style.display = 'block';
+                                setTimeout(() => {
+                                    card.classList.add('show');
+                                }, 10);
+                            } else {
+                                card.classList.remove('show');
+                                setTimeout(() => {
+                                    card.style.display = 'none';
+                                }, 300);
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.style.height = '80px';
+                    header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
+                } else {
+                    header.style.height = '100px';
+                    header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+                }
+            });
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input').value;
+                alert(`Thank you for subscribing with ${email}! You'll hear from us soon.`);
+                this.reset();
+            });
+            
+            // Animate elements on scroll
+            function animateOnScroll() {
+                const elements = document.querySelectorAll('.product-card');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.classList.add('show');
+                    }
+                });
+            }
+            
+            // Run animation on scroll
+            window.addEventListener('scroll', animateOnScroll);
+            // Run once on load
+            setTimeout(animateOnScroll, 500);
+            
+            // Quick view modal functionality
+            const quickViewModal = document.getElementById('quickViewModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Close modal when clicking outside content
+            quickViewModal.addEventListener('click', function(e) {
+                if (e.target === quickViewModal) {
+                    quickViewModal.classList.remove('active');
+                }
+            });
+            
+            // Close modal when clicking close button
+            closeModal.addEventListener('click', function() {
+                quickViewModal.classList.remove('active');
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && quickViewModal.classList.contains('active')) {
+                    quickViewModal.classList.remove('active');
+                }
+            });
+            
+            // Add quick view functionality
+            document.querySelectorAll('.quick-view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.product-card');
+                    const productTitle = card.querySelector('.product-title').textContent;
+                    const productPrice = card.querySelector('.current-price').textContent;
+                    const productImage = card.querySelector('.product-image').src;
+                    const productCategory = card.querySelector('.product-category').textContent;
+                    
+                    modalContent.innerHTML = `
+                        <div style="display: flex; flex-direction: column; height: 100%;">
+                            <div style="flex: 1; display: flex; padding: 30px;">
+                                <div style="flex: 1; padding-right: 30px;">
+                                    <img src="${productImage}" alt="${productTitle}" style="width: 100%; border-radius: 10px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <p style="color: var(--gray); margin-bottom: 10px;">${productCategory}</p>
+                                    <h2 style="font-size: 2rem; margin-bottom: 20px; color: var(--primary);">${productTitle}</h2>
+                                    <div style="font-size: 1.5rem; color: var(--secondary); font-weight: 700; margin-bottom: 30px;">${productPrice}</div>
+                                    <p style="margin-bottom: 30px; color: var(--text);">Premium quality streetwear with unique designs. Made from high-quality materials for comfort and durability.</p>
+                                    <div style="display: flex; gap: 15px;">
+                                        <a href="mailto:chitahelaza@gmail.com?subject=Inquiry about ${productTitle}&body=Hello, I'm interested in the ${productTitle}. Please send me more information." class="btn" style="flex: 1; text-align: center;">Send Email</a>
+                                        <a href="https://wa.me/27602130149?text=Hello! I'm interested in the ${productTitle}." class="btn btn-outline" style="flex: 1; text-align: center;">WhatsApp</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    quickViewModal.classList.add('active');
+                });
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    let targetElement;
+                    if (targetId === '#home') {
+                        targetElement = document.body;
+                    } else {
+                        targetElement = document.querySelector(targetId);
+                    }
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetId === '#home' ? 0 : targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (nav.classList.contains('active')) {
+                            nav.classList.remove('active');
+                            hamburger.querySelector('i').classList.add('fa-bars');
+                            hamburger.querySelector('i').classList.remove('fa-times');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
